@@ -1,13 +1,13 @@
 resource "aws_elasticsearch_domain" "example" {
-  domain_name = "test-opensearch"
+  domain_name = var.domain_name
 
-  elasticsearch_version = "OpenSearch_1.2"
+  elasticsearch_version = var.es_version
 
   cluster_config {
     instance_type            = "t3.small.elasticsearch"
     instance_count           = 1
     dedicated_master_enabled = false
-    zone_awareness_enabled = false
+    zone_awareness_enabled   = false
   }
 
   ebs_options {
@@ -16,24 +16,24 @@ resource "aws_elasticsearch_domain" "example" {
     ebs_enabled = true
   }
   encrypt_at_rest {
-      enabled = true
+    enabled = true
   }
   node_to_node_encryption {
-      enabled = true 
+    enabled = true
   }
   advanced_security_options {
-    enabled = true
+    enabled                        = true
     internal_user_database_enabled = true
 
     master_user_options {
-    master_user_name = "admin"
-    master_user_password = "Gkgkgk12!"
+      master_user_name     = "admin"
+      master_user_password = "Gkgkgk12!"
     }
   }
 
   domain_endpoint_options {
-      enforce_https = true
-      tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+    enforce_https       = true
+    tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
   }
 
 
@@ -41,9 +41,9 @@ resource "aws_elasticsearch_domain" "example" {
     automated_snapshot_start_hour = 23
   }
 
-#   advanced_options = {
-#     "override_main_response_version" = "true"
-#   }
+  #   advanced_options = {
+  #     "override_main_response_version" = "true"
+  #   }
 }
 
 resource "aws_elasticsearch_domain_policy" "main" {

@@ -22,5 +22,5 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-.hcl
+lock.hcl
 .terraform

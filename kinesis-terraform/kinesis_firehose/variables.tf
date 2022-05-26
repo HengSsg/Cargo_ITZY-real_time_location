@@ -19,3 +19,6 @@ variable "stream_name" {
 variable "domain-name" {
   type = string
 }
+variable "log_group_name" {
+  type = string
+}
