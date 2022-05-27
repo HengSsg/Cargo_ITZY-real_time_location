@@ -2,32 +2,21 @@ import boto3
 import json
 import requests
 from requests_aws4auth import AWS4Auth
+import os
 
-region = 'ap-northeast-2' # For example, us-west-1
+region = os.environ['region'] # For example, us-west-1
 service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
-host = 'https://search-devoops-cdqccbpku6x4ej76uauu6vacky.ap-northeast-2.es.amazonaws.com' # The OpenSearch domain endpoint with https://
+host = os.environ['aws_opensearch_endpoint'] # The OpenSearch domain endpoint with https://
 index = 'devoops'
 url = host + '/' + index + '/_search'
 
 # Lambda execution starts here
 def lambda_handler(event, context):
     print("=====event=====", event)
-    # Put the user query into the query DSL for more accurate search results.
-    # Note that certain fields are boosted (^).
-    # query = {
-    #     "size": 25,
-    #     "query": {
-    #         "multi_match": {
-    #             "query": event['queryStringParameters']['q'],
-    #             "fields": ["title^4", "plot^2", "actors", "directors"]
-    #         }
-    #     }
-    # }
-    # query = {"query": {"multi_match": {"query": "sensor-79178","fields": "sensor"}}}
-    # {"truckerId": "888888"}
+    
     query = {
         # "size": 25,
         "query": {
