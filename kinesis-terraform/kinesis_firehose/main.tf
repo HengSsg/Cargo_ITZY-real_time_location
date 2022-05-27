@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = "tf-test-bucket-cargo-buc"
+  bucket = var.bucket_name
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "test_stream" {

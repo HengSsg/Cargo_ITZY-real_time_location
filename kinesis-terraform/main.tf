@@ -7,6 +7,7 @@ terraform {
       version = "~> 3.0"
     }
   }
+    required_version = ">= 0.12"
 }
 
 provider "aws" {
@@ -41,6 +42,7 @@ module "kinesis_firehose" {
   stream_name     = module.kinesis_data_stream.stream_name
   log_stream_name = "DestinationDelivery"                                  //cloudwatch 로그 스트림 이름
   es_index_name   = module.opensearch_service.es_endpoint
+  bucket_name     = "tf-test-bucket-cargo-buc"   // 버킷이름을 정해주세요
 }
 
 module "opensearch_service" {

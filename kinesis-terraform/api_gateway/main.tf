@@ -58,6 +58,9 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
     "application/json" = <<EOF
 EOF
   }
+    depends_on = [
+    aws_api_gateway_integration.MyDemoIntegration
+  ]
 }
 
 resource "aws_api_gateway_deployment" "cargo-location" {
