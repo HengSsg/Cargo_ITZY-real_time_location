@@ -13,7 +13,7 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
 
   elasticsearch_configuration {
     domain_arn = var.domain_arn
-    index_name = "test"
+    index_name = var.es_index_name
     type_name  = ""
     role_arn   = aws_iam_role.firehose_role.arn
     cloudwatch_logging_options {
@@ -34,7 +34,7 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
 
 
 resource "aws_iam_role" "firehose_role" {
-  name = "firehose_role-1"
+  name = "firehose_role"
 
   assume_role_policy = <<EOF
 {

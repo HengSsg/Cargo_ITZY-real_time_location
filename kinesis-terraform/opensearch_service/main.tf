@@ -1,10 +1,10 @@
-resource "aws_elasticsearch_domain" "example" {
+resource "aws_elasticsearch_domain" "cargoitzy" {
   domain_name = var.domain_name
 
   elasticsearch_version = var.es_version
 
   cluster_config {
-    instance_type            = "t3.small.elasticsearch"
+    instance_type            = var.instance_type
     instance_count           = 1
     dedicated_master_enabled = false
     zone_awareness_enabled   = false
@@ -26,8 +26,8 @@ resource "aws_elasticsearch_domain" "example" {
     internal_user_database_enabled = true
 
     master_user_options {
-      master_user_name     = "admin"
-      master_user_password = "Gkgkgk12!"
+      master_user_name     = var.master_name
+      master_user_password = var.master_password
     }
   }
 
@@ -47,7 +47,7 @@ resource "aws_elasticsearch_domain" "example" {
 }
 
 resource "aws_elasticsearch_domain_policy" "main" {
-  domain_name = aws_elasticsearch_domain.example.domain_name
+  domain_name = aws_elasticsearch_domain.cargoitzy.domain_name
 
   access_policies = <<POLICIES
 {
@@ -59,7 +59,7 @@ resource "aws_elasticsearch_domain_policy" "main" {
         "AWS": "*"
       },
       "Action": "es:*",
-      "Resource": "${aws_elasticsearch_domain.example.arn}/*"
+      "Resource": "${aws_elasticsearch_domain.cargoitzy.arn}/*"
     }
   ]
 }

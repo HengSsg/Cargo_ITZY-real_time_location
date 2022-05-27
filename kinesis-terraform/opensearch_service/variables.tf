@@ -10,3 +10,6 @@ variable "es_version" {
 variable "domain_name" {
   type = string
 }
+variable "instance_type" {
+  type = string
+}

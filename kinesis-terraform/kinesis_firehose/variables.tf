@@ -22,3 +22,6 @@ variable "domain-name" {
 variable "log_group_name" {
   type = string
 }
+variable "es_index_name" {
+  type = string
+}
