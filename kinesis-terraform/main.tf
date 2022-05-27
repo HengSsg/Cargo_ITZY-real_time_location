@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 terraform {
   required_providers {
     aws = {
@@ -8,17 +10,19 @@ terraform {
 }
 
 provider "aws" {
-  region = "ap-northeast-2"
+  region = var.region
 }
 
 module "api_gateway" {
-  source  = "./api_gateway"
-  name = "cargo-location"  //게이트웨이 이름
-  path_name = "location"  // 리소스 이름
-  region = "ap-northeast-2"  // 리전
-  account = "728116505069"  //aws 계정 번호
-  stream_name = module.kinesis_data_stream.stream_name  //키네시스 데이터 스트림 이름(변경 x)
-  integration_type = "AWS" // AWS 서비스
+  source           = "./api_gateway"
+  name             = "cargo-location"                            //게이트웨이 이름
+  path_name        = "location"                                  // 게이트웨이 리소스 이름
+  region           = var.region                                  // 리전
+  account          = data.aws_caller_identity.current.account_id //aws 계정 번호
+  stream_name      = module.kinesis_data_stream.stream_name      //키네시스 데이터 스트림 이름(변경 x)
+  integration_type = "AWS"                                       // AWS 서비스
+  http_method      = "POST"
+  stage_name       = "production"
 }
 
 module "kinesis_data_stream" {
@@ -27,23 +31,25 @@ module "kinesis_data_stream" {
 }
 
 module "kinesis_firehose" {
-  source         = "./kinesis_firehose"
-  stream_arn     = module.kinesis_data_stream.stream_arn  //데이터스트림 arn
-  domain_arn     = module.opensearch_service.aws_elasticsearch_domain_arn //opensearch arn
-  domain-name    = module.opensearch_service.domain-name // opensearch name
-  region         = "ap-northeast-2"  //리전
-  account-id     = "728116505069"
-  stream_name    = module.kinesis_data_stream.stream_name
-  log_group_name = "DestinationDelivery"  //cloudwatch 로그그룹 이름
-  es_index_name = "test"
+  source          = "./kinesis_firehose"
+  name            = "terraform-kinesis-firehose-test-stream"
+  stream_arn      = module.kinesis_data_stream.stream_arn                  //데이터스트림 arn
+  domain_arn      = module.opensearch_service.aws_elasticsearch_domain_arn //opensearch arn
+  domain-name     = module.opensearch_service.domain-name                  // opensearch name
+  region          = var.region                                             //리전
+  account-id      = data.aws_caller_identity.current.account_id
+  stream_name     = module.kinesis_data_stream.stream_name
+  log_stream_name = "DestinationDelivery"                                  //cloudwatch 로그 스트림 이름
+  es_index_name   = module.opensearch_service.es_endpoint
 }
 
 module "opensearch_service" {
   source          = "./opensearch_service"
-  instance_type = "t3.small.elasticsearch"
-  domain_name     = "cargoitzy" //도메인 이름
-  es_version      = "OpenSearch_1.2" //opensearch name
-  master_name     = "admin"  //user name
-  master_password = "Gkgkgk12!" //user password
+  instance_type   = var.instance_type
+  domain_name     = "cargoitzy"             //도메인 이름
+  es_version      = var.es_version
+  master_name     = "admin"                 //user name
+  master_password = "Gkgkgk12!"             //user password
+  es_endpoint     = "test"
 }
 

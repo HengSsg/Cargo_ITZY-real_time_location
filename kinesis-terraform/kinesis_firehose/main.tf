@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
-  name        = "terraform-kinesis-firehose-test-stream"
+  name        = var.name
   destination = "elasticsearch"
 
   kinesis_source_configuration {
@@ -18,8 +18,8 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
     role_arn   = aws_iam_role.firehose_role.arn
     cloudwatch_logging_options {
       enabled         = true
-      log_group_name  = var.log_group_name
-      log_stream_name = "example"
+      log_group_name  = "/aws/kinesisfirehose/${var.name}"
+      log_stream_name = var.log_stream_name
     }
   }
   s3_configuration {
@@ -34,7 +34,7 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
 
 
 resource "aws_iam_role" "firehose_role" {
-  name = "firehose_role"
+  name = "kinesis-firehose_role"
 
   assume_role_policy = <<EOF
 {
@@ -56,8 +56,8 @@ resource "aws_iam_role" "firehose_role" {
 EOF
 }
 
-resource "aws_iam_policy" "policy" {
-  name        = "test-policy"
+resource "aws_iam_policy" "firehose-policy" {
+  name        = "firehose-kinesis-es-policy"
   description = "A test policy"
 
   policy = <<EOF
@@ -80,5 +80,5 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "test-attach" {
   role       = aws_iam_role.firehose_role.name
-  policy_arn = aws_iam_policy.policy.arn
+  policy_arn = aws_iam_policy.firehose-policy.arn
 }

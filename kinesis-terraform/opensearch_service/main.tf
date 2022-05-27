@@ -1,6 +1,7 @@
 resource "aws_elasticsearch_domain" "cargoitzy" {
   domain_name = var.domain_name
 
+
   elasticsearch_version = var.es_version
 
   cluster_config {
