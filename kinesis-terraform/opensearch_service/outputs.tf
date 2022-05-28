@@ -1,9 +1,9 @@
 output "aws_elasticsearch_domain_arn" {
-  value = aws_elasticsearch_domain.cargoitzy.arn
+  value = aws_elasticsearch_domain.opensearch.arn
 }
 output "domain-name" {
-  value = aws_elasticsearch_domain.cargoitzy.domain_name
+  value = aws_elasticsearch_domain.opensearch.domain_name
 }
 output "es_endpoint" {
-  value = aws_elasticsearch_domain.cargoitzy.endpoint
+  value = aws_elasticsearch_domain.opensearch.endpoint
 }

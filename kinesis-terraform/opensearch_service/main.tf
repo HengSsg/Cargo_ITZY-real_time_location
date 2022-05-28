@@ -1,7 +1,5 @@
-resource "aws_elasticsearch_domain" "cargoitzy" {
-  domain_name = var.domain_name
-
-
+resource "aws_elasticsearch_domain" "opensearch" {
+  domain_name           = var.domain_name
   elasticsearch_version = var.es_version
 
   cluster_config {
@@ -10,7 +8,6 @@ resource "aws_elasticsearch_domain" "cargoitzy" {
     dedicated_master_enabled = false
     zone_awareness_enabled   = false
   }
-
   ebs_options {
     volume_size = 10
     volume_type = "gp2"
@@ -31,24 +28,17 @@ resource "aws_elasticsearch_domain" "cargoitzy" {
       master_user_password = var.master_password
     }
   }
-
   domain_endpoint_options {
     enforce_https       = true
     tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
   }
-
-
   snapshot_options {
     automated_snapshot_start_hour = 23
   }
-
-  #   advanced_options = {
-  #     "override_main_response_version" = "true"
-  #   }
 }
 
-resource "aws_elasticsearch_domain_policy" "main" {
-  domain_name = aws_elasticsearch_domain.cargoitzy.domain_name
+resource "aws_elasticsearch_domain_policy" "domain_policy" {
+  domain_name = aws_elasticsearch_domain.opensearch.domain_name
 
   access_policies = <<POLICIES
 {
@@ -60,7 +50,7 @@ resource "aws_elasticsearch_domain_policy" "main" {
         "AWS": "*"
       },
       "Action": "es:*",
-      "Resource": "${aws_elasticsearch_domain.cargoitzy.arn}/*"
+      "Resource": "${aws_elasticsearch_domain.opensearch.arn}/*"
     }
   ]
 }
