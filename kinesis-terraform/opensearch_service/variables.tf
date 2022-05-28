@@ -13,6 +13,3 @@ variable "domain_name" {
 variable "instance_type" {
   type = string
 }
-variable "es_endpoint" {
-  type = string
-}

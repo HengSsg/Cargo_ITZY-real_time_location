@@ -10,6 +10,6 @@ output "stream_name" {
 output "domain-name" {
   value = module.opensearch_service.domain-name
 }
-output "es_endpoint" {
-  value = module.opensearch_service.es_endpoint
+output "invoke_url" {
+  value = "${module.api_gateway.invoke_url}/${module.api_gateway.path_name}"
 }

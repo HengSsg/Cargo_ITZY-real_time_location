@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = "tf-test-bucket-cargo-buc"
+  bucket = var.bucket_name
 }
 
-resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
+resource "aws_kinesis_firehose_delivery_stream" "firehose" {
   name        = var.name
-  destination = "elasticsearch"
+  destination = var.destination
 
   kinesis_source_configuration {
     kinesis_stream_arn = var.stream_arn
@@ -12,10 +12,13 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
   }
 
   elasticsearch_configuration {
-    domain_arn = var.domain_arn
-    index_name = var.es_index_name
-    type_name  = ""
-    role_arn   = aws_iam_role.firehose_role.arn
+    domain_arn         = var.domain_arn
+    index_name         = var.es_index_name
+    index_rotation_period = "NoRotation"
+    type_name          = ""
+    role_arn           = aws_iam_role.firehose_role.arn
+    buffering_interval = 60
+    buffering_size     = 1
     cloudwatch_logging_options {
       enabled         = true
       log_group_name  = "/aws/kinesisfirehose/${var.name}"
@@ -25,8 +28,8 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
   s3_configuration {
     role_arn           = aws_iam_role.firehose_role.arn
     bucket_arn         = aws_s3_bucket.bucket.arn
-    buffer_size        = 10
-    buffer_interval    = 400
+    buffer_size        = 1
+    buffer_interval    = 60
     compression_format = "GZIP"
   }
 
