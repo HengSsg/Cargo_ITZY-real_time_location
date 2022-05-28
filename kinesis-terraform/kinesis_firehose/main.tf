@@ -14,6 +14,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
   elasticsearch_configuration {
     domain_arn         = var.domain_arn
     index_name         = var.es_index_name
+    index_rotation_period = "NoRotation"
     type_name          = ""
     role_arn           = aws_iam_role.firehose_role.arn
     buffering_interval = 60
