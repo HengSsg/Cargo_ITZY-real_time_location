@@ -42,7 +42,7 @@ module "kinesis_firehose" {
   account-id      = data.aws_caller_identity.current.account_id
   stream_name     = module.kinesis_data_stream.stream_name
   log_stream_name = var.log_stream_name // cloudwatch 로그 스트림 이름
-  es_index_name   = module.opensearch_service.es_endpoint
+  es_index_name   = "location"
 }
 
 module "opensearch_service" {
@@ -52,6 +52,5 @@ module "opensearch_service" {
   es_version      = var.es_version
   master_name     = var.master_name     //user name
   master_password = var.master_password //user password
-  es_endpoint     = "location"
 }
 
