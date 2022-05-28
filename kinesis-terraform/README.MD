@@ -12,3 +12,6 @@ Error: Error creating API Gateway Deployment: BadRequestException: The REST API 
 
 
 `apply`후 `outputs`에서 `invoke_url`의 주소를 카피해서 요청바디(json)와 함께 `POST`를 해주세요
+
+## Clean UP
+- `terraform destroy` 입력후 엔터 두 번으로 변수설정 부분 스킵.
