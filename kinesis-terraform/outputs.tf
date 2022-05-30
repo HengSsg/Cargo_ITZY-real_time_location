@@ -13,3 +13,7 @@ output "domain-name" {
 output "invoke_url" {
   value = "${module.api_gateway.invoke_url}/${module.api_gateway.path_name}"
 }
+output "domain-endpoint" {
+  value = module.opensearch_service.domain-endpoint
+  description = "람다 환경변수"
+}
