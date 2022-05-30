@@ -1,13 +1,13 @@
 data "aws_caller_identity" "current" {}
 
 terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
+  cloud {
+    organization = "hengsgg"
+
+    workspaces {
+      name = "cargoitzy"
     }
   }
-  required_version = ">= 0.12"
 }
 
 provider "aws" {
@@ -36,7 +36,7 @@ module "kinesis_firehose" {
   source          = "./kinesis_firehose"
   name            = "cargo-firehose"       // 키네시스 firehose 이름
   bucket_name     = "cargo-fail-logs-buck" // @@버킷이름을 정해주세요@@
-  destination     = var.destination
+  destination     = "elasticsearch"
   stream_arn      = module.kinesis_data_stream.stream_arn                  // 데이터스트림 arn
   domain_arn      = module.opensearch_service.aws_elasticsearch_domain_arn // opensearch arn
   region          = var.region                                             // 리전
@@ -51,8 +51,8 @@ module "opensearch_service" {
   instance_type   = var.instance_type
   domain_name     = "cargoitzy" //도메인 이름
   es_version      = var.es_version
-  master_name     = var.master_name     //user name
-  master_password = var.master_password //user password
+  master_name     = "admin"     //user name
+  master_password = "cargo1234!" //user password
 }
 
 module "lambda_function" {
