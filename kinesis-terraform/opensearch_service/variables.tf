@@ -13,3 +13,4 @@ variable "domain_name" {
 variable "instance_type" {
   type = string
 }
+

@@ -14,6 +14,7 @@ provider "aws" {
   region = var.region
 }
 
+
 module "api_gateway" {
   source           = "./api_gateway"
   name             = "cargo-location-post"                       //게이트웨이 이름

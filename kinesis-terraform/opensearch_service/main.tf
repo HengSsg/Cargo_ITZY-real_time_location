@@ -57,3 +57,4 @@ resource "aws_elasticsearch_domain_policy" "domain_policy" {
 POLICIES
 }
 
+

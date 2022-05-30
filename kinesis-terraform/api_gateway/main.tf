@@ -105,6 +105,7 @@ resource "aws_iam_policy" "api-kinesis" {
   name        = "api-kinesis-policy"
   description = "A test policy"
 
+
   policy = <<EOF
 {
     "Version": "2012-10-17",
