@@ -36,6 +36,8 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
 }
 
 
+
+
 resource "aws_iam_role" "firehose_role" {
   name = "kinesis-firehose_role"
 
