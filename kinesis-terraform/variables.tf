@@ -22,11 +22,11 @@ variable "log_stream_name" {
   type    = string
   default = "DestinationDelivery"
 }
-# variable "master_name" {
-#   type        = string
-#   description = "마스터 유저 이름을 적어주세요"
-# }
-# variable "master_password" {
-#   type        = string
-#   description = "마스터 유저 비밀번호를 적어주세요"
-# }
+variable "master_name" {
+  type        = string
+  description = "마스터 유저 이름을 적어주세요"
+}
+variable "master_password" {
+  type        = string
+  description = "마스터 유저 비밀번호를 적어주세요"
+}
