@@ -135,7 +135,7 @@ resource "aws_api_gateway_method" "GET" {
 
 resource "aws_api_gateway_method_response" "response_200_user" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.driver.id
+  resource_id = aws_api_gateway_resource.id.id
   http_method = aws_api_gateway_method.GET.http_method
   status_code = "200"
   response_models = {
@@ -145,9 +145,9 @@ resource "aws_api_gateway_method_response" "response_200_user" {
 
 resource "aws_api_gateway_integration" "integration_user" {
   rest_api_id             = aws_api_gateway_rest_api.rest_api.id
-  resource_id             = aws_api_gateway_resource.driver.id
+  resource_id             = aws_api_gateway_resource.id.id
   http_method             = aws_api_gateway_method.GET.http_method
-  integration_http_method = "POST"
+  integration_http_method = "GET"
   type                    = "AWS_PROXY"
   uri                     = var.lambda_invoke_arn
   timeout_milliseconds    = 29000
@@ -162,11 +162,11 @@ EOF
 
 resource "aws_api_gateway_integration_response" "IntegrationResponse_user" {
   depends_on = [
-    aws_api_gateway_method.method,
+    aws_api_gateway_method.GET,
     aws_api_gateway_integration.integration_user
   ]
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.driver.id
+  resource_id = aws_api_gateway_resource.id.id
   http_method = aws_api_gateway_method.GET.http_method
   status_code = aws_api_gateway_method_response.response_200_user.status_code
   response_templates = {
