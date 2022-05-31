@@ -120,66 +120,26 @@ resource "aws_api_gateway_resource" "driver" {
   path_part   = var.path_name_user
 }
 
-resource "aws_api_gateway_resource" "id" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
+resource "aws_api_gateway_resource" "resource_user" {
+  path_part   = "{id}"
   parent_id   = aws_api_gateway_resource.driver.id
-  path_part   = var.path_name_user_id
-}
-
-resource "aws_api_gateway_method" "GET" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.id.id
-  http_method   = var.http_method_user
-  authorization = "NONE"
-  request_parameters = {
-    "method.request.path.id" = true
-  }
-}
-
-resource "aws_api_gateway_method_response" "response_200_user" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.id.id
-  http_method = aws_api_gateway_method.GET.http_method
-  status_code = "200"
-  response_models = {
-    "application/json" = "Empty"
-  }
 }
 
-resource "aws_api_gateway_integration" "integration_user" {
+resource "aws_api_gateway_method" "method" {
+  rest_api_id   = aws_api_gateway_rest_api.rest_api.id
+  resource_id   = aws_api_gateway_resource.resource_user.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "integration" {
   rest_api_id             = aws_api_gateway_rest_api.rest_api.id
-  resource_id             = aws_api_gateway_resource.id.id
-  http_method             = aws_api_gateway_method.GET.http_method
+  resource_id             = aws_api_gateway_resource.resource_user.id
+  http_method             = aws_api_gateway_method.method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.lambda_invoke_arn
-  timeout_milliseconds    = 29000
-  request_parameters = {
-    "truckerId" = "method.request.path.id"
-  }
-  request_templates = {
-    "application/json" = <<EOF
-{
-  {"truckerId" : "$input.params('id')"}
-}
-EOF
-  }
-
-}
-
-resource "aws_api_gateway_integration_response" "IntegrationResponse_user" {
-  depends_on = [
-    aws_api_gateway_method.GET,
-    aws_api_gateway_integration.integration_user
-  ]
-  rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.id.id
-  http_method = aws_api_gateway_method.GET.http_method
-  status_code = aws_api_gateway_method_response.response_200_user.status_code
-  response_templates = {
-    "application/json" = <<EOF
-EOF
-  }
+  uri                     = var.module.lambda_function.lambda_function_
 }
 ################################################################################################################
 

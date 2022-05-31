@@ -29,9 +29,6 @@ variable "http_method_user" {
 variable "stage_name" {
   type = string
 }
-variable "path_name_user_id" {
-  type = string
-}
 variable "lambda_invoke_arn" {
   type = string
 }

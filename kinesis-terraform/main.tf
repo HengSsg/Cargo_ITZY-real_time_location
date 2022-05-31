@@ -29,13 +29,12 @@ module "api_gateway" {
   name             = "cargo-location-post"                       //게이트웨이 이름
   path_name_driver        = "location"                                  // 게이트웨이 리소스 이름
   path_name_user = "delivery"
-  path_name_user_id = "{id}"
   region           = var.region                                  // 리전
   account          = data.aws_caller_identity.current.account_id //aws 계정 번호
   stream_name      = module.kinesis_data_stream.stream_name      //키네시스 데이터 스트림 이름(변경 x)
   integration_type = "AWS"                                       // AWS 서비스
   http_method_driver      = "POST"
-  http_method_user = "GET"
+  http_method_user = "ANY"
   stage_name       = "production"
   lambda_invoke_arn = module.lambda_function.lambda_function_
 }
