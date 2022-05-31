@@ -2,22 +2,22 @@ data "aws_caller_identity" "current" {}
 
 terraform {
 
-#   cloud {
-#     organization = "hengsgg"
+  cloud {
+    organization = "hengsgg"
 
-#     workspaces {
-#       name = "cargoitzy"
-#     }
-#   }
-# }
-
-  required_providers {
-      aws = {
-      source = "hashicorp/aws"
-      version = "= 3.74.2"
+    workspaces {
+      name = "cargoitzy"
     }
   }
 }
+
+#   required_providers {
+#       aws = {
+#       source = "hashicorp/aws"
+#       version = "= 3.74.2"
+#     }
+#   }
+# }
 
 provider "aws" {
   region = var.region
