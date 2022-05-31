@@ -158,6 +158,10 @@ resource "aws_api_gateway_integration" "integration_user" {
 }
 EOF
   }
+    request_parameters = {
+    "integration.request.header.X-Authorization" = "truckerId"
+    "integration.request.header.X-Foo"           = "method.request.path.id"
+  }
 }
 
 resource "aws_api_gateway_integration_response" "IntegrationResponse_user" {
