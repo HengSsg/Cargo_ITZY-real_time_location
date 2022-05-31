@@ -52,7 +52,7 @@ module "opensearch_service" {
   domain_name     = "cargoitzy" //도메인 이름
   es_version      = var.es_version
   master_name     = "admin"     //user name
-  master_password = "cargo1234!" //user password
+  master_password = "Cargo1234!" //user password
 }
 
 module "lambda_function" {
