@@ -131,6 +131,9 @@ resource "aws_api_gateway_method" "GET" {
   resource_id   = aws_api_gateway_resource.id.id
   http_method   = var.http_method_user
   authorization = "NONE"
+  request_parameters = {
+    "method.request.path.accountId" = true
+  }
 }
 
 resource "aws_api_gateway_method_response" "response_200_user" {
@@ -159,8 +162,7 @@ resource "aws_api_gateway_integration" "integration_user" {
 EOF
   }
     request_parameters = {
-    "integration.request.header.X-Authorization" = "truckerId"
-    "integration.request.header.X-Foo"           = "method.request.path.id"
+    "truckerId" = "method.request.path.id"
   }
 }
 
