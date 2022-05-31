@@ -132,7 +132,7 @@ resource "aws_api_gateway_method" "GET" {
   http_method   = var.http_method_user
   authorization = "NONE"
   request_parameters = {
-    "method.request.path.accountId" = true
+    "method.request.path.id" = true
   }
 }
 
@@ -162,7 +162,7 @@ resource "aws_api_gateway_integration" "integration_user" {
 EOF
   }
     request_parameters = {
-    "truckerId" = "method.request.path.id"
+    truckerId = "method.request.path.id"
   }
 }
 
