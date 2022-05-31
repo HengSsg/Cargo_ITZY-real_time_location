@@ -154,6 +154,9 @@ resource "aws_api_gateway_integration" "integration_user" {
   type                    = "AWS_PROXY"
   uri                     = var.lambda_invoke_arn
   timeout_milliseconds    = 29000
+  request_parameters = {
+    "truckerId" = "method.request.path.id"
+  }
   request_templates = {
     "application/json" = <<EOF
 {
@@ -161,9 +164,7 @@ resource "aws_api_gateway_integration" "integration_user" {
 }
 EOF
   }
-    request_parameters = {
-    truckerId = "method.request.path.id"
-  }
+
 }
 
 resource "aws_api_gateway_integration_response" "IntegrationResponse_user" {
