@@ -17,3 +17,6 @@ output "domain-endpoint" {
   value = module.opensearch_service.domain-endpoint
   description = "람다 환경변수"
 }
+output "lambda_function_" {
+  value = module.lambda_function.lambda_function_
+}
