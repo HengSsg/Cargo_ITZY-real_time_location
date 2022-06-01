@@ -3,6 +3,6 @@ output "invoke_url" {
 }
 
 output "path_name" {
-  value = aws_api_gateway_resource.resource.path_part
+  value = aws_api_gateway_resource.location.path_part
 }
 
