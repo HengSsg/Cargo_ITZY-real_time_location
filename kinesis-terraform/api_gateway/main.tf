@@ -7,23 +7,23 @@ resource "aws_api_gateway_rest_api" "rest_api" {
 }
 #########################################################################################
 
-resource "aws_api_gateway_resource" "resource" {
+resource "aws_api_gateway_resource" "location" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
   parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
   path_part   = var.path_name_driver
 }
 
-resource "aws_api_gateway_method" "method" {
+resource "aws_api_gateway_method" "location_post" {
   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.resource.id
+  resource_id   = aws_api_gateway_resource.location.id
   http_method   = var.http_method_driver
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_method_response" "response_200" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.resource.id
-  http_method = aws_api_gateway_method.method.http_method
+  resource_id = aws_api_gateway_resource.location.id
+  http_method = aws_api_gateway_method.location_post.http_method
   status_code = "200"
   response_models = {
     "application/json" = "Empty"
@@ -32,10 +32,10 @@ resource "aws_api_gateway_method_response" "response_200" {
 
 resource "aws_api_gateway_integration" "Integration" {
   rest_api_id             = aws_api_gateway_rest_api.rest_api.id
-  resource_id             = aws_api_gateway_resource.resource.id
-  http_method             = aws_api_gateway_method.method.http_method
+  resource_id             = aws_api_gateway_resource.location.id
+  http_method             = aws_api_gateway_method.location_post.http_method
   type                    = var.integration_type
-  integration_http_method = aws_api_gateway_method.method.http_method
+  integration_http_method = aws_api_gateway_method.location_post.http_method
   credentials             = aws_iam_role.api-kinesis.arn
   uri                     = "arn:aws:apigateway:${var.region}:kinesis:action/PutRecord"
   timeout_milliseconds    = 29000
@@ -52,12 +52,12 @@ EOF
 
 resource "aws_api_gateway_integration_response" "IntegrationResponse" {
   depends_on = [
-    aws_api_gateway_method.method,
+    aws_api_gateway_method.location_post,
     aws_api_gateway_integration.Integration
   ]
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  resource_id = aws_api_gateway_resource.resource.id
-  http_method = aws_api_gateway_method.method.http_method
+  resource_id = aws_api_gateway_resource.location.id
+  http_method = aws_api_gateway_method.location_post.http_method
   status_code = aws_api_gateway_method_response.response_200.status_code
   response_templates = {
     "application/json" = <<EOF
@@ -143,7 +143,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 
   depends_on = [
     "aws_api_gateway_integration.Integration-user",
-    "aws_api_gateway_integration.Integration-userz"
+    "aws_api_gateway_integration.Integration"
     ] 
 
 }
