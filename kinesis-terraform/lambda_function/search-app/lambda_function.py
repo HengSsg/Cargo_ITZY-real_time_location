@@ -13,7 +13,7 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 
 host = os.environ['opensearch_endpoint'] # The OpenSearch domain endpoint with https://
 
-index = 'devoops'
+index = 'location'
 url = host + '/' + index + '/_search'
 
 # Get the service resource.

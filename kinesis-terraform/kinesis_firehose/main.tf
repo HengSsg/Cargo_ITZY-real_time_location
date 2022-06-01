@@ -6,6 +6,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
   name        = var.name
   destination = var.destination
 
+
   kinesis_source_configuration {
     kinesis_stream_arn = var.stream_arn
     role_arn           = aws_iam_role.firehose_role.arn
@@ -24,6 +25,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
       log_group_name  = "/aws/kinesisfirehose/${var.name}"
       log_stream_name = var.log_stream_name
     }
+    s3_backup_mode = "AllDocuments"
   }
   s3_configuration {
     role_arn           = aws_iam_role.firehose_role.arn
@@ -32,6 +34,9 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     buffer_interval    = 60
     compression_format = "GZIP"
   }
+
+
+
 
 }
 
