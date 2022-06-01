@@ -23,12 +23,12 @@ variable "integration_type" {
 variable "http_method_driver" {
   type = string
 }
-variable "http_method_user" {
-  type = string
-}
 variable "stage_name" {
   type = string
 }
 variable "lambda_invoke_arn" {
+  type = string
+}
+variable "function_name" {
   type = string
 }
