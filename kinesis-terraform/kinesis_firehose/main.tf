@@ -23,7 +23,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     cloudwatch_logging_options {
       enabled         = true
       log_group_name  = "/aws/kinesisfirehose/${var.name}"
-      log_stream_name = var.log_stream_name
+      log_stream_name = "Delivery-logs"
     }
     s3_backup_mode = "AllDocuments"
   }

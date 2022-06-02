@@ -94,3 +94,5 @@ resource "aws_iam_role_policy_attachment" "attachment_lambda" {
   role       = aws_iam_role.api-lambda.name
   policy_arn = aws_iam_policy.api-lambda.arn
 }
+
+# curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1' -H 'Content-Type: application/json' -d '{"Description": "To be or not to be, that is the question."}'

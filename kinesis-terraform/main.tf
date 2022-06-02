@@ -47,7 +47,7 @@ module "kinesis_data_stream" {
 module "kinesis_firehose" {
   source          = "./kinesis_firehose"
   name            = "cargo-firehose"         // 키네시스 firehose 이름
-  bucket_name     = "cargo-all-logs" // @@버킷이름을 정해주세요@@
+  bucket_name     = "cargo-all-logs-hengsgg" // @@버킷이름을 정해주세요@@
   destination     = "elasticsearch"
   stream_arn      = module.kinesis_data_stream.stream_arn                  // 데이터스트림 arn
   domain_arn      = module.opensearch_service.aws_elasticsearch_domain_arn // opensearch arn
