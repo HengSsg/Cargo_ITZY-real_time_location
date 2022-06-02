@@ -15,6 +15,7 @@ host = os.environ['opensearch_endpoint'] # The OpenSearch domain endpoint with h
 
 index = 'location'
 url = host + '/' + index + '/_search'
+print("=====url=====", url)
 
 # Get the service resource.
 dynamodb = boto3.resource('dynamodb')
@@ -28,10 +29,11 @@ def lambda_handler(event, context):
                                         'truckerId': str(event['truckerId'])
                                     }
                                 )
-    status = dynamo_data['Item']['delivery-status']
+    status = dynamo_data['Item']['delivery-status'] #.replace(" ", "")
     departure = json.loads(re.sub(r"\s", "", dynamo_data['Item']['departure']))
     destination = json.loads(re.sub(r"\s", "", dynamo_data['Item']['destination']))
     
+    print("====status====",status)
     # 2. Opensearch GET
     query = {
             "size": 1,
@@ -56,7 +58,12 @@ def lambda_handler(event, context):
     
     dep_location = (float(departure['latitude']), float(departure['longitude']))
     des_location = (float(destination['latitude']), float(destination['longitude']))
-    curr_json = r.json()['hits']['hits'][0]['_source']
+    print(r.status_code)
+    try:
+        curr_json = r.json()['hits']['hits'][0]['_source']
+    except:
+        print("Not Number!")
+    # curr_json = r.json()['hits']['hits'][0]['_source']
     
     curr_location = (float(curr_json['location']['lat']), float(curr_json['location']['lon']))
     
@@ -65,7 +72,7 @@ def lambda_handler(event, context):
     
     distance_in_progress_percentage = round(100 * depart_curr / (depart_curr + curr_dest), 2)
     
-    if (depart_curr <= 0.5)&(status=='preparing'):
+    if (distance_in_progress_percentage >= 5)&(status=='preparing'):
         dynamo_data = table.put_item(
                                 Item={
                                         'truckerId': str(event['truckerId']),
@@ -76,7 +83,7 @@ def lambda_handler(event, context):
                                 )
         status = 'shipping'
     
-    if (curr_dest <= 0.5)&(status=='shipping'):
+    if (distance_in_progress_percentage > 98)&(status=='shipping'):
         dynamo_data = table.put_item(
                                 Item={
                                         'truckerId': str(event['truckerId']),
@@ -94,7 +101,8 @@ def lambda_handler(event, context):
             },
             "isBase64Encoded": False
         }
-
+    print("====status====")
+    print(status) 
     if status == 'preparing':
         response['body'] = {
             "truckerId": str(event['truckerId']),
