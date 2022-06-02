@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
+  force_destroy = true
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "firehose" {
@@ -22,6 +23,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     index_rotation_period = "NoRotation"
     type_name             = ""
     role_arn              = aws_iam_role.firehose_role.arn
+    retry_duration        = 1
     buffering_interval    = 60
     buffering_size        = 1
     s3_backup_mode = "AllDocuments"
