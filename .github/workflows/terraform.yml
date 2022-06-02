@@ -52,12 +52,6 @@ jobs:
       working-directory: ./kinesis-terraform
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
-      continue-on-error: true
-      
-    - name: Terraform Apply
-      working-directory: ./kinesis-terraform
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
       
 
         
