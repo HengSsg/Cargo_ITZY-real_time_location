@@ -6,13 +6,17 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
   name        = var.name
   destination = var.destination
 
-
   kinesis_source_configuration {
     kinesis_stream_arn = var.stream_arn
     role_arn           = aws_iam_role.firehose_role.arn
   }
 
   elasticsearch_configuration {
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = "/aws/kinesisfirehose/${var.name}"
+      log_stream_name = "Delivery-logs"
+  }
     domain_arn            = var.domain_arn
     index_name            = var.es_index_name
     index_rotation_period = "NoRotation"
@@ -20,11 +24,6 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     role_arn              = aws_iam_role.firehose_role.arn
     buffering_interval    = 60
     buffering_size        = 1
-    cloudwatch_logging_options {
-      enabled         = true
-      log_group_name  = "/aws/kinesisfirehose/${var.name}"
-      log_stream_name = "Delivery-logs"
-    }
     s3_backup_mode = "AllDocuments"
   }
   s3_configuration {
@@ -33,6 +32,11 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     buffer_size        = 1
     buffer_interval    = 60
     compression_format = "GZIP"
+     cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = "/aws/s3-cargo/${var.name}"
+      log_stream_name = "Delivery-logs"
+  }
   }
 
 
