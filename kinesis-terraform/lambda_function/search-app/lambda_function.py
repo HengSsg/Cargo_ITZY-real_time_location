@@ -59,18 +59,19 @@ def lambda_handler(event, context):
     dep_location = (float(departure['latitude']), float(departure['longitude']))
     des_location = (float(destination['latitude']), float(destination['longitude']))
     print(r.status_code)
-    try:
+    try: # opensearch에 data가 없는 경우 
         curr_json = r.json()['hits']['hits'][0]['_source']
+        curr_location = (float(curr_json['location']['lat']), float(curr_json['location']['lon']))
+        depart_curr = haversine(dep_location, curr_location, unit='km')
+        curr_dest = haversine(curr_location, des_location, unit='km')
+        
+        distance_in_progress_percentage = round(100 * depart_curr / (depart_curr + curr_dest), 2)
     except:
         print("Not Number!")
+        distance_in_progress_percentage = 0
     # curr_json = r.json()['hits']['hits'][0]['_source']
     
-    curr_location = (float(curr_json['location']['lat']), float(curr_json['location']['lon']))
     
-    depart_curr = haversine(dep_location, curr_location, unit='km')
-    curr_dest = haversine(curr_location, des_location, unit='km')
-    
-    distance_in_progress_percentage = round(100 * depart_curr / (depart_curr + curr_dest), 2)
     
     if (distance_in_progress_percentage >= 5)&(status=='preparing'):
         dynamo_data = table.put_item(
