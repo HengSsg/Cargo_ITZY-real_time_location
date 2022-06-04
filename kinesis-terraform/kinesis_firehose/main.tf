@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = var.bucket_name
+  bucket        = var.bucket_name
   force_destroy = true
 }
 
@@ -17,7 +17,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
       enabled         = true
       log_group_name  = "/aws/kinesisfirehose/${var.name}"
       log_stream_name = "Delivery-logs"
-  }
+    }
     domain_arn            = var.domain_arn
     index_name            = var.es_index_name
     index_rotation_period = "NoRotation"
@@ -26,7 +26,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     retry_duration        = 1
     buffering_interval    = 60
     buffering_size        = 1
-    s3_backup_mode = "AllDocuments"
+    s3_backup_mode        = "AllDocuments"
   }
   s3_configuration {
     role_arn           = aws_iam_role.firehose_role.arn
@@ -34,11 +34,11 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose" {
     buffer_size        = 1
     buffer_interval    = 60
     compression_format = "GZIP"
-     cloudwatch_logging_options {
+    cloudwatch_logging_options {
       enabled         = true
       log_group_name  = "/aws/s3-cargo/${var.name}"
       log_stream_name = "Delivery-logs"
-  }
+    }
   }
 
 

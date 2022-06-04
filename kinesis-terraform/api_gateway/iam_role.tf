@@ -1,6 +1,6 @@
 ### iam role ###
-resource "aws_iam_role" "api-kinesis" {
-  name = "api-kinesis-role"
+resource "aws_iam_role" "api_kinesis_put_record" {
+  name = "api_kinesis_put_record"
 
   assume_role_policy = <<EOF
 {
@@ -18,8 +18,8 @@ resource "aws_iam_role" "api-kinesis" {
 EOF
 }
 
-resource "aws_iam_policy" "api-kinesis" {
-  name        = "api-kinesis-policy"
+resource "aws_iam_policy" "api_kinesis_put_record" {
+  name        = "api_kinesis_put_recordpolicy"
   description = "A test policy"
 
 
@@ -40,17 +40,16 @@ resource "aws_iam_policy" "api-kinesis" {
 }
 EOF
 }
-#######################################################################################################################
-
 
 resource "aws_iam_role_policy_attachment" "attachment" {
-  role       = aws_iam_role.api-kinesis.name
-  policy_arn = aws_iam_policy.api-kinesis.arn
+  role       = aws_iam_role.api_kinesis_put_record.name
+  policy_arn = aws_iam_policy.api_kinesis_put_record.arn
 }
 
+#######################################################################################################################
 
-resource "aws_iam_role" "api-lambda" {
-  name = "api-lambda"
+resource "aws_iam_role" "api_lambda_role" {
+  name = "api_lambda_role"
 
   assume_role_policy = <<EOF
 {
@@ -68,9 +67,8 @@ resource "aws_iam_role" "api-lambda" {
 EOF
 }
 
-resource "aws_iam_policy" "api-lambda" {
-  name        = "api-lambda-policy"
-
+resource "aws_iam_policy" "api_lambda_policy" {
+  name = "api_lambda_policy"
 
   policy = <<EOF
 {
@@ -91,8 +89,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attachment_lambda" {
-  role       = aws_iam_role.api-lambda.name
-  policy_arn = aws_iam_policy.api-lambda.arn
+  role       = aws_iam_role.api_lambda_role.name
+  policy_arn = aws_iam_policy.api_lambda_policy.arn
 }
-
-# curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1' -H 'Content-Type: application/json' -d '{"Description": "To be or not to be, that is the question."}'

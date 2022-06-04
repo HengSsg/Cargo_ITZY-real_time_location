@@ -1,3 +1,40 @@
+data "archive_file" "zip_the_python_code" {
+  type        = "zip"
+  source_dir  = "${path.module}/${var.source_dir}"
+  output_path = "${path.module}/${var.function_zip}"
+}
+
+resource "aws_lambda_function" "terraform_lambda_func" {
+  filename         = "${path.module}/${var.function_zip}"
+  function_name    = var.function_name
+  role             = aws_iam_role.lambda_role.arn
+  handler          = var.handler
+  runtime          = var.runtime
+  depends_on       = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+  source_code_hash = filebase64sha256("${path.module}/${var.function_zip}")
+
+  environment {
+    variables = {
+      region              = "${var.region}"
+      opensearch_endpoint = "${var.domain_endpoint}"
+    }
+  }
+
+}
+
+resource "aws_cloudwatch_log_group" "cargo_log" {
+  name = "/aws/lambda/${aws_lambda_function.terraform_lambda_func.function_name}"
+
+  retention_in_days = 30
+}
+
+resource "aws_lambda_permission" "allow_api" {
+  statement_id  = "AllowAPIgatewayInvokation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.terraform_lambda_func.function_name
+  principal     = "apigateway.amazonaws.com"
+}
+
 resource "aws_iam_role" "lambda_role" {
   name               = "Spacelift_Test_Lambda_Function_Role"
   assume_role_policy = <<EOF
@@ -72,41 +109,4 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role-2" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.iam_policy_for_lambda-2.arn
-}
-
-data "archive_file" "zip_the_python_code" {
-  type        = "zip"
-  source_dir  = "${path.module}/search-app/"
-  output_path = "${path.module}/hello-python.zip"
-}
-
-resource "aws_lambda_function" "terraform_lambda_func" {
-  filename         = "${path.module}/hello-python.zip"
-  function_name    = "cargo_location"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.9"
-  depends_on       = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
-  source_code_hash = filebase64sha256("${path.module}/hello-python.zip")
-
-  environment {
-    variables = {
-      region              = "ap-northeast-2"
-      opensearch_endpoint = ""
-    }
-  }
-
-}
-
-resource "aws_cloudwatch_log_group" "cargo_log" {
-  name = "/aws/lambda/${aws_lambda_function.terraform_lambda_func.function_name}"
-
-  retention_in_days = 30
-}
-
-resource "aws_lambda_permission" "allow_api" {
-  statement_id  = "AllowAPIgatewayInvokation"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.terraform_lambda_func.function_name
-  principal     = "apigateway.amazonaws.com"
 }

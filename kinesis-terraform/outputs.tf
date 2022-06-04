@@ -11,7 +11,8 @@ output "domain-name" {
   value = module.opensearch_service.domain-name
 }
 output "invoke_url" {
-  value = "${module.api_gateway.invoke_url}/${module.api_gateway.path_name}"
+  value       = "${module.api_gateway.invoke_url}/${module.api_gateway.path_name}"
+  description = "driver 위치를 전송하는 엔드포인트 입니다."
 }
 output "domain-endpoint" {
   value       = module.opensearch_service.domain-endpoint
