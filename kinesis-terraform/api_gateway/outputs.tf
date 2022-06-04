@@ -3,6 +3,6 @@ output "invoke_url" {
 }
 
 output "path_name" {
-  value = aws_api_gateway_resource.location.path_part
+  value = aws_api_gateway_resource.kinesis_put_record.path_part
 }
 
