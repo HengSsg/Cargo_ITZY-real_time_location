@@ -62,8 +62,8 @@ module "opensearch_service" {
   instance_type   = var.instance_type
   domain_name     = "cargo-itzy" //도메인 이름
   es_version      = var.es_version
-  master_name     = "admin"      //user name
-  master_password = "Cargo1234!" //user password
+  master_name     = var.master_name    //user name
+  master_password = var.master_password //user password
 }
 
 module "lambda_function" {
