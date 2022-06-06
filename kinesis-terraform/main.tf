@@ -9,16 +9,16 @@ terraform {
       name = "cargoitzy"
     }
   }
-  ###
+  ##
 
-  # ### local test provider
+  ### local test provider
   # required_providers {
   #   aws = {
   #     source  = "hashicorp/aws"
   #     version = "= 3.74.2"
   #   }
   # }
-  ###
+  # ##
 }
 provider "aws" {
   region = var.region
@@ -47,7 +47,7 @@ module "kinesis_data_stream" {
 module "kinesis_firehose" {
   source          = "./kinesis_firehose"
   name            = "cargo-firehose"         // 키네시스 firehose 이름
-  bucket_name     = "cargo-all-logs-hengsgg" // @@버킷이름을 정해주세요@@
+  bucket_name     = "cargo-all-logs-main" // @@버킷이름을 정해주세요@@
   destination     = "elasticsearch"
   es_index_name   = "location"
   stream_arn      = module.kinesis_data_stream.stream_arn                  // 데이터스트림 arn
