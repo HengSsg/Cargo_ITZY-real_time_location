@@ -1,23 +1,23 @@
 data "aws_caller_identity" "current" {}
 
 terraform {
-  # ### Github Action provider
-  # cloud {
-  #   organization = "hengsgg"
+  ### Github Action provider
+  cloud {
+    organization = "hengsgg"
 
-  #   workspaces {
-  #     name = "cargoitzy"
-  #   }
-  # }
-  # ###
-
-  ### local test provider
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "= 3.74.2"
+    workspaces {
+      name = "cargoitzy"
     }
   }
+  ###
+
+  # ### local test provider
+  # required_providers {
+  #   aws = {
+  #     source  = "hashicorp/aws"
+  #     version = "= 3.74.2"
+  #   }
+  # }
   ###
 }
 provider "aws" {
@@ -63,8 +63,8 @@ module "opensearch_service" {
   domain_name     = "cargo-itzy" //도메인 이름
   instance_type   = var.instance_type
   es_version      = var.es_version
-  master_name     = "admin"     //var.master_name     //user name
-  master_password = "Gkgkgk12!" //var.master_password //user password
+  master_name     = var.master_name    //user name
+  master_password = var.master_password //user password
 }
 
 module "lambda_function" {
