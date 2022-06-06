@@ -76,6 +76,9 @@ module "lambda_function" {
   function_zip    = "hello-python.zip"
   source_dir      = "search-app"
   domain_endpoint = module.opensearch_service.domain-endpoint
+}
 
+module "dynamoDB" {
+  source = "./dynamoDB"
 
 }
