@@ -1,7 +1,7 @@
-#  프로젝트 Description
+#  Project Description
 -  운송상태를 포함한 화물 드라이버 위치 추적 시스템
 
-## TECH
+## Tech
 
 <div align="center">
 <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
@@ -15,17 +15,27 @@
 <img src="https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=Terraform&logoColor=white"/>
 </div>
 
-## 시나리오 
-시나리오
-화물운송 1등 기업 센디는 화물용달 예약 서비스를 제공합니다.<br/>
-예약을 성공적으로 진행한 후 화물 용달이 실제로 운송중일 경우, 고객은 이러한 운송 정보를 실시간으로 파악할 수 있어야 합니다.
+## Architecture
 
-## 요구사항
-소비자는 예약 후, 매칭이 이루어진 드라이버의 실시간 정보를 받아올 수 있어야 합니다.<br/>
-드라이버 전용 앱은 별도로 구성하며, 위치 데이터 스트림이 JSON 형식으로 실시간으로 전송되어야 합니다.<br/>
-스트림 데이터 처리는 Kinesis Data Stream, Kinesis Data Firehose 사용을 고려해볼 수 있습니다.<br/>
-드라이버 위치 정보에 대한 로그는 Elasticsearch를 이용합니다.<br/>
-서비스 간의 연결은 서버리스 형태로 구성해야 합니다.<br/>
+![image](https://user-images.githubusercontent.com/98450173/172277436-14203943-bc73-484a-b60a-a0451f9c648d.png)
+
+### 1. API Gateway
+동기적으로 rest api를 사용하기 위해서 gateway를 사용했고 일대일로 요청/응답(PutRecord)
+
+### 2. Kinesis Data Stream 
+실시간 위치 정보를 수집하고 순서에 따라 저장
+
+### 3. Kinesis Data Firehose
+Kinesis Data Stream으로부터 record를 받아(GetRecord) 실시간 데이터 처리 및 전송
+
+### 4. Opensearch 
+실시간 데이터 저장 및 검색과 같이 다양한 사용 사례에 사용
+
+### 5. API Gateway
+GET /delivery/{:truckerId}
+
+### 6, 7, 8, 9.
+Lambda OpenSearch에서 받아온드라이버의 위치정보와 DynamoDB에서 받아온 출발지와 도착지의 위치정보를 비교하여 운송상태를 다시 DynamoDB에 저장.
 
 
 ## Team
