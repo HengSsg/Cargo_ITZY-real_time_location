@@ -1,7 +1,7 @@
 #  프로젝트 Description
 -  운송상태를 포함한 화물 드라이버 위치 추적 시스템
 
-## TECH
+## Tech
 
 <div align="center">
 <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
@@ -15,17 +15,13 @@
 <img src="https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=Terraform&logoColor=white"/>
 </div>
 
-## 시나리오 
-시나리오
-화물운송 1등 기업 센디는 화물용달 예약 서비스를 제공합니다.<br/>
-예약을 성공적으로 진행한 후 화물 용달이 실제로 운송중일 경우, 고객은 이러한 운송 정보를 실시간으로 파악할 수 있어야 합니다.
+## Project Architecture
 
-## 요구사항
-소비자는 예약 후, 매칭이 이루어진 드라이버의 실시간 정보를 받아올 수 있어야 합니다.<br/>
-드라이버 전용 앱은 별도로 구성하며, 위치 데이터 스트림이 JSON 형식으로 실시간으로 전송되어야 합니다.<br/>
-스트림 데이터 처리는 Kinesis Data Stream, Kinesis Data Firehose 사용을 고려해볼 수 있습니다.<br/>
-드라이버 위치 정보에 대한 로그는 Elasticsearch를 이용합니다.<br/>
-서비스 간의 연결은 서버리스 형태로 구성해야 합니다.<br/>
+![image](https://user-images.githubusercontent.com/98450173/172277436-14203943-bc73-484a-b60a-a0451f9c648d.png)
+
+### API Gateway
+POST /location
+
 
 
 ## Team
