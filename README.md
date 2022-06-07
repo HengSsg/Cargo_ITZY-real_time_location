@@ -4,7 +4,6 @@
 ## Tech
 
 <div align="center">
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>
 <img src="https://img.shields.io/badge/Python-3776AB.svg?&style=flat-square&logo=Python&logoColor=white"/>
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=Amazon%20AWS&logoColor=white"/>
@@ -21,7 +20,9 @@
 
 
 ### 1. API Gateway
-`POST /location`<br/> 
+`POST /location`<br/>
+- Request Body<br/>
+
 ![image](https://user-images.githubusercontent.com/98450173/172278998-9b01fdb3-b2c7-4f19-bf01-bd7fa44525a2.png)<br/>
 동기적으로 rest api를 사용하기 위해서 gateway를 사용했고 일대일로 요청/응답(PutRecord)
 
@@ -36,6 +37,8 @@ Kinesis Data Stream으로부터 record를 받아(GetRecord) 실시간 데이터 
 
 ### 5. API Gateway
 `GET /delivery/{:truckerId}`<br/>
+- Response Body<br/>
+
 ![image](https://user-images.githubusercontent.com/98450173/172279131-f17e61a6-5538-494a-8966-2c7b80fc5ac1.png)
 
 ### 6, 7, 8, 9.
