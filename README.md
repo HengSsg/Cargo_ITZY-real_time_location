@@ -17,7 +17,8 @@
 
 ## Architecture
 
-![image](https://user-images.githubusercontent.com/98450173/172277436-14203943-bc73-484a-b60a-a0451f9c648d.png)
+![화면 캡처 2022-06-07 110231](https://user-images.githubusercontent.com/98450173/172279871-4abd4832-54f6-4b9a-ad6c-13822e01fbf8.png)
+
 
 ### 1. API Gateway
 `POST /location`<br/> 
