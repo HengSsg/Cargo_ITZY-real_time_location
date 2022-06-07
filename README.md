@@ -19,29 +19,29 @@
 
 
 ### 1. API Gateway
-`POST /location`<br/>
-- Request Body<br/>
-
-![image](https://user-images.githubusercontent.com/98450173/172278998-9b01fdb3-b2c7-4f19-bf01-bd7fa44525a2.png)<br/>
-동기적으로 rest api를 사용하기 위해서 gateway를 사용했고 일대일로 요청/응답(PutRecord)
-
+>`POST /location`<br/>
+>- Request Body<br/>
+>
+>![image](https://user-images.githubusercontent.com/98450173/172278998-9b01fdb3-b2c7-4f19-bf01-bd7fa44525a2.png)<br/>
+>동기적으로 rest api를 사용하기 위해서 gateway를 사용했고 일대일로 요청/응답(PutRecord)
+>
 ### 2. Kinesis Data Stream 
-실시간 위치 정보를 수집하고 순서에 따라 저장
-
+>실시간 위치 정보를 수집하고 순서에 따라 저장
+>
 ### 3. Kinesis Data Firehose
-Kinesis Data Stream으로부터 record를 받아(GetRecord) 실시간 데이터 처리 및 전송
-
+>Kinesis Data Stream으로부터 record를 받아(GetRecord) 실시간 데이터 처리 및 전송
+>
 ### 4. Opensearch 
-실시간 데이터 저장 및 검색과 같이 다양한 사용 사례에 사용
-
+>실시간 데이터 저장 및 검색과 같이 다양한 사용 사례에 사용
+>
 ### 5. API Gateway
-`GET /delivery/{:truckerId}`<br/>
-- Response Body<br/>
-
-![image](https://user-images.githubusercontent.com/98450173/172279131-f17e61a6-5538-494a-8966-2c7b80fc5ac1.png)
-
+>`GET /delivery/{:truckerId}`<br/>
+>- Response Body<br/>
+>
+>![image](https://user-images.githubusercontent.com/98450173/172279131-f17e61a6-5538-494a-8966-2c7b80fc5ac1.png)
+>
 ### 6, 7, 8, 9.
-Lambda OpenSearch에서 받아온드라이버의 위치정보와 DynamoDB에서 받아온 출발지와 도착지의 위치정보를 비교하여 운송상태를 다시 DynamoDB에 저장.
+>Lambda OpenSearch에서 받아온드라이버의 위치정보와 DynamoDB에서 받아온 출발지와 도착지의 위치정보를 비교하여 운송상태를 다시 DynamoDB에 저장.
 
 
 ## Team
