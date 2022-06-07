@@ -1,4 +1,4 @@
-#  프로젝트 Description
+#  Project Description
 -  운송상태를 포함한 화물 드라이버 위치 추적 시스템
 
 ## Tech
@@ -15,13 +15,27 @@
 <img src="https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=Terraform&logoColor=white"/>
 </div>
 
-## Project Architecture
+## Architecture
 
 ![image](https://user-images.githubusercontent.com/98450173/172277436-14203943-bc73-484a-b60a-a0451f9c648d.png)
 
-### API Gateway
-POST /location
+### 1. API Gateway
+동기적으로 rest api를 사용하기 위해서 gateway를 사용했고 일대일로 요청/응답(PutRecord)
 
+### 2. Kinesis Data Stream 
+실시간 위치 정보를 수집하고 순서에 따라 저장
+
+### 3. Kinesis Data Firehose
+Kinesis Data Stream으로부터 record를 받아(GetRecord) 실시간 데이터 처리 및 전송
+
+### 4. Opensearch 
+실시간 데이터 저장 및 검색과 같이 다양한 사용 사례에 사용
+
+### 5. API Gateway
+GET /delivery/{:truckerId}
+
+### 6, 7, 8, 9.
+Lambda OpenSearch에서 받아온드라이버의 위치정보와 DynamoDB에서 받아온 출발지와 도착지의 위치정보를 비교하여 운송상태를 다시 DynamoDB에 저장.
 
 
 ## Team
