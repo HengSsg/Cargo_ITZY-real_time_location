@@ -1,4 +1,5 @@
-# Getting Started with devops-01-Final-TeamE-cargoitzy
+#  프로젝트 Description
+-  운송상태를 포함한 화물 드라이버 위치 추적 시스템
 
 # TECH
 
